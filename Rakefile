@@ -68,6 +68,18 @@ task :clean do
   cleanup
 end
 
+# Credit to http://github.com/palmerit for the below task
+# This task has to be called on its own, and used sparingly, as it will purge your entire
+# CloudFlare cache for the site that is referenced in CFdomain
+# You do not want to put anything sensitive in this file.
+# You will need to define environmental variables in your ~/.profile for the below to work.
+desc "Purge all Cloudflare-cached assets"
+task :purge do
+  CFtoken = ENV['CFtoken']
+  CFemail = ENV['CFemail']
+  CFdomain = ENV['CFdomain']
+  sh("curl https://www.cloudflare.com/api_json.html -d a=fpurge_ts -d tkn=#{CFtoken} -d email=#{CFemail} -d z=#{CFdomain} -d v=1")
+end
 
 desc 'Preview on local machine (server with --auto --drafts)'
 task :preview => :clean do

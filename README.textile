@@ -102,11 +102,10 @@ h1. Change Log
 h1. Caveats
 
 1. If you do not put the following directive in your @_config.yml@ file:
-bc. exclude: ['Rakefile']
+bc. exclude: ['Rakefile']  
 the @Rakefile@ will end up in your website.  (It shouldn't do any harm if you publish it.)
 
-2. If you use ```rake preview``` it will now include posts in _drafts, which must now have a date so that jekyll knows where to put the draft
-posts in the post order.
+2. If you use ```rake preview``` it will now include posts in _drafts, which must now have a date so that jekyll knows where to put the draft posts in the post order.
 
 h1. License
 
