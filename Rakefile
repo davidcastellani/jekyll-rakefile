@@ -89,6 +89,21 @@ task :preview => :clean do
 end
 task :serve => :preview
 
+# Credit to http://github.com/palmerit for the below task
+# This task is called at the end of :deploy
+# Add CFurl enivornmental viriable to your ~/.profile and have it be to your
+# https://domain.com/index.html or http://domain.com/index.html
+# This will invalidate just the index.html of your site
+# This is useful for when you push new content to your jekyll site that is linked
+# from the homepage
+desc "Invalidate index.html"
+task :invalidate do
+  CFtoken = ENV['CFtoken']
+  CFemail = ENV['CFemail']
+  CFdomain = ENV['CFdomain']
+  CFurl = ENV['CFurl']
+  sh("curl https://www.cloudflare.com/api_json.html -d a=zone_file_purge -d tkn=#{CFtoken} -d email=#{CFemail} -d z=#{CFdomain} -d url=#{CFurl}")
+end
 
 desc 'Build for deployment (but do not deploy)'
 task :build, [:deployment_configuration] => :clean do |t, args|
@@ -137,6 +152,7 @@ task :deploy, [:deployment_configuration] => :build do |t, args|
     puts "Error! deploy_url not found in _config_deploy.yml"
     exit 1
   end
+Rake::Task[:invalidate].execute
 end
 
 
