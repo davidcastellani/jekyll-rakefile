@@ -73,7 +73,7 @@ desc 'Preview on local machine (server with --auto)'
 task :preview => :clean do
   compass('compile') # so that we are sure sass has been compiled before we run the server
   compass('watch &')
-  jekyll('serve --watch')
+  jekyll('serve --watch --drafts')
 end
 task :serve => :preview
 
@@ -89,7 +89,7 @@ task :build, [:deployment_configuration] => :clean do |t, args|
     puts "Are you sure you want to continue? [Y|n]"
 
     ans = STDIN.gets.chomp
-    exit if ans != 'Y' 
+    exit if ans != 'Y'
   end
 
   compass('compile')
@@ -113,7 +113,7 @@ task :deploy, [:deployment_configuration] => :build do |t, args|
       puts "Are you sure you want to continue? [Y|n]"
 
       ans = STDIN.gets.chomp
-      exit if ans != 'Y' 
+      exit if ans != 'Y'
     end
 
     deploy_dir = matchdata[1]
@@ -182,7 +182,7 @@ task :create_post, [:date, :title, :category, :content] do |t, args|
   while File.exists?(post_dir + filename) do
     filename = post_date[0..9] + "-" +
                File.basename(slugify(post_title)) + "-" + i.to_s +
-               $post_ext 
+               $post_ext
     i += 1
   end
 
@@ -197,7 +197,7 @@ task :create_post, [:date, :title, :category, :content] do |t, args|
       f.puts "date: #{post_date}"
       f.puts "---"
       f.puts args.content if args.content != nil
-    end  
+    end
 
     puts "Post created under \"#{post_dir}#{filename}\""
 
@@ -229,14 +229,14 @@ end
 
 def list_file_changed
   content = "Files changed since last deploy:\n"
-  IO.popen('find * -newer _last_deploy.txt -type f') do |io| 
+  IO.popen('find * -newer _last_deploy.txt -type f') do |io|
     while (line = io.gets) do
       filename = line.chomp
       if user_visible(filename) then
         content << "* \"#{filename}\":{{site.url}}/#{file_change_ext(filename, ".html")}\n"
       end
     end
-  end 
+  end
   content
 end
 
@@ -247,12 +247,12 @@ EXCLUSION_LIST = [/.*~/, /_.*/, "javascripts?", "js", /stylesheets?/, "css", "Ra
 def user_visible(filename)
   exclusion_list = Regexp.union(EXCLUSION_LIST)
   not filename.match(exclusion_list)
-end 
+end
 
 def file_change_ext(filename, newext)
   if File.extname(filename) == ".textile" or File.extname(filename) == ".md" then
     filename.sub(File.extname(filename), newext)
-  else  
+  else
     filename
   end
 end
