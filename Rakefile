@@ -69,7 +69,7 @@ task :clean do
 end
 
 
-desc 'Preview on local machine (server with --auto)'
+desc 'Preview on local machine (server with --auto --drafts)'
 task :preview => :clean do
   compass('compile') # so that we are sure sass has been compiled before we run the server
   compass('watch &')
@@ -294,6 +294,8 @@ task :check_links do
     abort 'Install anemone gem: gem install anemone'
   end
 end
+
+
 
 
 #

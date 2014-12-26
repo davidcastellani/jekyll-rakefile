@@ -4,7 +4,7 @@ A Rakefile to simplify previewing and deploying "jekyll":http://jekyllrb.com web
 
 The main features of this rakefile are:
 
-* Deployment through rsync 
+* Deployment through rsync
 * Ready-made tasks for common operations (e.g., creating a post, checking links, listing changes sine last deploy)
 * Management of different configurations, one for previewing and another for deploying (it simplifies deployment on non-root URLs)
 * Support for compass compilation
@@ -90,21 +90,23 @@ rake create_post[date,title,category,content]  # Create a post
 rake deploy                                    # Build and deploy to remote server
 rake list_changes                              # Print the file changed since last deploy
 rake post_changes                              # Create a post listing all changes since last deploy
-rake preview                                   # Preview on local machine (server with --auto)
+rake preview                                   # Preview on local machine (server with --auto --drafts)
 </pre>
 
 h1. Change Log
+* version 2.2 Changed task:preview to include --draft so draft posts would be included in the local preview. I felt this was important for my workflow.
+
 
 * version 2.0 changes quite radically the behaviour, exploiting some of the changes made to "Jekyll":http://jekyllrb.com.  The @Rakefile@ does not mess up with @_config.yml@ anymore, but it expects a @_config_deploy.yml@ (or similar) file to specify the deployment directives.  The value of $deploy_dir$ is now specified in @_config_deploy.yml@; this allows to keep the configuration variables together; support multiple deployment configurations; give the @_rake_configuration.rb@ file up, if the default settings (compass, git check, ...) are ok.  The new git checks verify that the local repository is in sync with the remote and optionally pushes all changes to the remote after a commit.
 
 h1. Caveats
 
-If you do not put the following directive in your @_config.yml@ file:
-
+1. If you do not put the following directive in your @_config.yml@ file:
 bc. exclude: ['Rakefile']
-
 the @Rakefile@ will end up in your website.  (It shouldn't do any harm if you publish it.)
 
+2. If you use ```rake preview``` it will now include posts in _drafts, which must now have a date so that jekyll knows where to put the draft
+posts in the post order.
 
 h1. License
 
