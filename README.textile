@@ -1,6 +1,9 @@
 h1. What it is
 
-A Rakefile to simplify previewing and deploying "jekyll":http://jekyllrb.com websites.
+A Rakefile to simplify previewing and deploying "jekyll":http://jekyllrb.com websites behind Cloudflare.
+
+**This will not deploy correctly if you are not using Cloudflare as it depends on environmental variables that are 
+tied to CloudFlares API.**
 
 The main features of this rakefile are:
 
